@@ -1,38 +1,99 @@
-"""Extract data on near-Earth objects and close approaches from CSV and JSON files.
-
-The `load_neos` function extracts NEO data from a CSV file, formatted as
-described in the project instructions, into a collection of `NearEarthObject`s.
-
-The `load_approaches` function extracts close approach data from a JSON file,
-formatted as described in the project instructions, into a collection of
-`CloseApproach` objects.
-
-The main module calls these functions with the arguments provided at the command
-line, and uses the resulting collections to build an `NEODatabase`.
-
-You'll edit this file in Task 2.
-"""
 import csv
 import json
+import pathlib
 
 from models import NearEarthObject, CloseApproach
 
-
 def load_neos(neo_csv_path):
-    """Read near-Earth object information from a CSV file.
+    infile = pathlib.Path(neo_csv_path)
+    out_neos = list()
 
-    :param neo_csv_path: A path to a CSV file containing data about near-Earth objects.
-    :return: A collection of `NearEarthObject`s.
-    """
-    # TODO: Load NEO data from the given CSV file.
-    return ()
-
+    with open(infile, 'r') as input:
+        data = csv.DictReader(input)
+        for row in data:
+            out_neos.append(NearEarthObject(
+                designation=row['pdes'], name=row['name'], diameter=row['diameter'], hazardous=row['pha']))
+    return out_neos
 
 def load_approaches(cad_json_path):
-    """Read close approach data from a JSON file.
-
-    :param neo_csv_path: A path to a JSON file containing data about close approaches.
-    :return: A collection of `CloseApproach`es.
     """
-    # TODO: Load close approach data from the given JSON file.
-    return ()
+    Returns a list of Close Approaches
+    In [1]: from extract import *
+    In [2]: items = load_approaches('./data/cad.json')
+    In [3]: items[0:5]
+    Out[3]: 
+    [CloseApproach(time='1900-01-01 00:11', distance=0.09, velocity=16.75, neo=None),
+    CloseApproach(time='1900-01-01 02:33', distance=0.41, velocity=17.92, neo=None),
+    CloseApproach(time='1900-01-01 03:13', distance=0.11, velocity=7.40, neo=None),
+    CloseApproach(time='1900-01-01 05:01', distance=0.24, velocity=4.78, neo=None),
+    CloseApproach(time='1900-01-01 07:16', distance=0.39, velocity=9.93, neo=None)]    
+    """
+    
+    # get the data from the json file
+    infile = pathlib.Path(cad_json_path)
+    with open(infile, 'r') as input:
+        raw_data = json.load(input)
+
+    # create a list of fields
+    fields = list()
+    # create a list of approaches with complete row data
+    raw_approaches = list()
+    # do the processing of data 
+    for item in raw_data:
+        if item == 'fields':
+            for item in raw_data[item]:
+                fields.append(item)
+        if item == 'data':
+            for list_item in raw_data[item]:
+                raw_approaches.append(list_item)
+
+    # helper to get the indexes of the fields in json file
+    fields_dict = build_dict_of_fields(fields)
+    # get a list of approaches based on the index of fields from raw_approaches
+    approaches = build_list_of_approaches(raw_approaches, fields_dict)
+    
+    list_of_ca_objects = list()
+    # finally we can create a list of CAs based on keywords on a 
+    for approach in approaches:
+        list_of_ca_objects.append(CloseApproach(designation=approach['des'], time=approach['cd'], distance=approach['dist'], velocity=approach['v_rel']))
+        
+    return list_of_ca_objects
+
+def build_list_of_approaches(approaches, fields):
+    o_approaches = list()
+    # loop through approaches and create a dictionary for each approach which is added to the list o_approaches
+    for approach in approaches:
+        # for each approach we need an empty set
+        output_item = dict()
+        
+        # add these values to the dict
+        """ 
+        OUTPUT: 
+            In [3]: items[0]
+            Out[3]:
+            {'v_rel': '16.7523040362574',
+            'dist': '0.0921795123769547',
+            'cd': '1900-Jan-01 00:11',
+            'des': '170903'}
+        """
+        output_item.update(v_rel=approach[fields['v_rel']])
+        output_item.update(dist=approach[fields['dist']])
+        output_item.update(cd=approach[fields['cd']])
+        output_item.update(des=approach[fields['des']])
+        
+        # append the output_item to list with the formatted approach
+        o_approaches.append(output_item)
+        
+    # return the whole list
+    return o_approaches
+
+def build_dict_of_fields(fields):
+    """Find Index of field for future, maybe someone decides to change the field order and based on the description we can find it out and modify the output to write correct data"""
+    if type(fields) == list:
+        des = fields.index('des')
+        cd = fields.index('cd')
+        dist = fields.index('dist')
+        v_rel = fields.index('v_rel')
+    else:
+        raise TypeError
+    return {"des": des, "cd": cd, "dist": dist, "v_rel": v_rel}
