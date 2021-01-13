@@ -86,12 +86,18 @@ class NearEarthObject:
     def __str__(self):
         hazard = ''
         if self.hazardous:
-            hazard = 'is potentially hazarodous!'
+            hazard = 'Potentially hazarodous!'
         else:
-            hazard = 'is not hazardous.'
-        return (f"NearEarthObject( {self.fullname} ) "
-                f"The diameter of this neo is: {self.diameter:.3f} km. "
-                f"This object {hazard}")
+            hazard = 'Not hazardous'
+                
+        header = "\n+--------- NearEarthObject ---------+\n"
+        neo_obj = f" {self.fullname} "
+        tmp_diameter = f"Ø {round(self.diameter,3)} km"
+        return (f"{header}"
+                f"|{neo_obj : ^35}|\n"
+                f"|{tmp_diameter : ^35}|\n"
+                f"|{hazard : ^35}|\n"
+                f"+-----------------------------------+\n")
 
     # return repr representation of the NEO
     def __repr__(self):
