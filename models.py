@@ -5,7 +5,7 @@ class NearEarthObject:
     _counter = 0
 
     def __init__(self, designation, name, diameter, hazardous):
-        self.designation = designation
+        self._designation = designation
         if name:
             self.name = name
         else:
@@ -48,6 +48,16 @@ class NearEarthObject:
         self._object_id += 1
         return result
     
+    def show_approaches(self, limit=5):
+        if self.approaches:
+            count = 0
+            for approach in self.approaches:
+                if count < limit:
+                    print(approach)
+                    count += 1
+                else: 
+                    break
+    
     def append(self, item):
         if type(item) == CloseApproach:
             self.approaches.append(item)
@@ -56,26 +66,38 @@ class NearEarthObject:
     def object_id(self):
         return self._object_id
     
+    @property
+    def designation(self):
+        return self._designation
+    
+    @property
+    def neo_name(self):
+        return self.name
+    
     # return full name of the NEO
     @property
     def fullname(self):
         # if name is not empty return long fullname else short
         if self.name:
-            return f"{self.designation} ({self.name})"
+            return f"{self.designation} - {self.name}"
         else:
             return f"{self.designation}"
-
-# return the string representation of the NEO
+    # return the string representation of the NEO
     def __str__(self):
-        return (f"NearEarthObject(designation={self.designation}, name={self.name}, "
-                f"diameter={self.diameter:.3f}, hazardous={self.hazardous}, "
-                f"approaches={self.approaches}")
+        hazard = ''
+        if self.hazardous:
+            hazard = 'is potentially hazarodous!'
+        else:
+            hazard = 'is not hazardous.'
+        return (f"NearEarthObject( {self.fullname} ) "
+                f"The diameter of this neo is: {self.diameter:.3f} km. "
+                f"This object {hazard}")
 
-# return repr representation of the NEO
+    # return repr representation of the NEO
     def __repr__(self):
-        return (f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, "
-                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})")
-        
+        return (f"NearEarthObject({self.fullname}, "
+                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r}, "
+                f"approaches={self.approaches}")
 
 class CloseApproach:
     def __init__(self, designation, time, distance, velocity, neo=None):
@@ -98,6 +120,10 @@ class CloseApproach:
         else:
             self.neo = None
 
+
+    def __getitem__(self, index):
+        return self[index]
+    
     @property 
     def designation(self):
         return self._designation
@@ -105,7 +131,6 @@ class CloseApproach:
     @property
     def time_str(self):
         return datetime_to_str(self.time) 
-
 
     def attach(self, neo):
         if type(neo) == NearEarthObject:
@@ -116,4 +141,4 @@ class CloseApproach:
 
     def __repr__(self):
         return (f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
-                f"velocity={self.velocity:.2f}, neo={self.neo!r})")
+                f"velocity={self.velocity:.2f})")

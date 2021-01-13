@@ -16,18 +16,6 @@ def load_neos(neo_csv_path):
     return out_neos
 
 def load_approaches(cad_json_path):
-    """
-    Returns a list of Close Approaches
-    In [1]: from extract import *
-    In [2]: items = load_approaches('./data/cad.json')
-    In [3]: items[0:5]
-    Out[3]: 
-    [CloseApproach(time='1900-01-01 00:11', distance=0.09, velocity=16.75, neo=None),
-    CloseApproach(time='1900-01-01 02:33', distance=0.41, velocity=17.92, neo=None),
-    CloseApproach(time='1900-01-01 03:13', distance=0.11, velocity=7.40, neo=None),
-    CloseApproach(time='1900-01-01 05:01', distance=0.24, velocity=4.78, neo=None),
-    CloseApproach(time='1900-01-01 07:16', distance=0.39, velocity=9.93, neo=None)]    
-    """
     
     # get the data from the json file
     infile = pathlib.Path(cad_json_path)

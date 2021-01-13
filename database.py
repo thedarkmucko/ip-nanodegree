@@ -1,68 +1,57 @@
-def create_neodb(neos, approaches):
-    for neo in neos:
-        for approach in approaches:
-            if neo.designation == approach._designation:
-                neo.append(approach)
-                approach.attach(neo)
-        
-            
+"""
+NEODatabase 
+An Object that holds all neos and approaches sorted by designation to create the object fast
+"""
 
 class NEODatabase:
     def __init__(self, neos, approaches):
+    # init method to initialize the NEODatabase
+        neos.sort(key=lambda x: x.designation)
+        approaches.sort(key=lambda x: x.designation)
         self._neos = neos
         self._approaches = approaches
+
+        i = 0
+        j = 0
         
-        # TODO: What additional auxiliary data structures will be useful?
+        while i < len(neos) and j < len(approaches):
+            neo = neos[i] 
+            approach = approaches[j]   
+            if neo.designation == approach.designation:     
+                neo.append(approach)
+                approach.attach(neo)
+                j += 1
+            else:
+                i += 1
 
-        # TODO: Link together the NEOs and their close approaches.
+       
+    def neoAt(self, index):
+    # helper method to locate a neo at index
+        return self._neos[index]
+    
+    def approachAt(self, index):
+    # helper method to locate an approach by index
+        return self._approaches[index]
 
+    def __getitem__(self, index):
+    # to make it an iterable, returns a neo (which has all informations)
+        return self._neos[index]
+    
     def get_neo_by_designation(self, designation):
-        """Find and return an NEO by its primary designation.
-
-        If no match is found, return `None` instead.
-
-        Each NEO in the data set has a unique primary designation, as a string.
-
-        The matching is exact - check for spelling and capitalization if no
-        match is found.
-
-        :param designation: The primary designation of the NEO to search for.
-        :return: The `NearEarthObject` with the desired primary designation, or `None`.
-        """
-        # TODO: Fetch an NEO by its primary designation.
+    # return a neo by designation or None
+        for neo in self._neos:
+            if neo.designation == designation:
+                return neo
         return None
 
     def get_neo_by_name(self, name):
-        """Find and return an NEO by its name.
-
-        If no match is found, return `None` instead.
-
-        Not every NEO in the data set has a name. No NEOs are associated with
-        the empty string nor with the `None` singleton.
-
-        The matching is exact - check for spelling and capitalization if no
-        match is found.
-
-        :param name: The name, as a string, of the NEO to search for.
-        :return: The `NearEarthObject` with the desired name, or `None`.
-        """
-        # TODO: Fetch an NEO by its name.
+    # return a neo by name or None
+        for neo in self._neos:
+            if neo.neo_name == name:
+                return neo
         return None
 
     def query(self, filters=()):
-        """Query close approaches to generate those that match a collection of filters.
-
-        This generates a stream of `CloseApproach` objects that match all of the
-        provided filters.
-
-        If no arguments are provided, generate all known close approaches.
-
-        The `CloseApproach` objects are generated in internal order, which isn't
-        guaranteed to be sorted meaninfully, although is often sorted by time.
-
-        :param filters: A collection of filters capturing user-specified criteria.
-        :return: A stream of matching `CloseApproach` objects.
-        """
-        # TODO: Generate `CloseApproach` objects that match all of the filters.
+    #filter neodb object and return a generator based on filters
         for approach in self._approaches:
             yield approach
