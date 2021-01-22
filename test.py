@@ -24,3 +24,5 @@ neo.show_approaches()
 neo = neodb.get_neo_by_designation("100004")
 print(neo)
 neo.show_approaches(limit=3)
+
+

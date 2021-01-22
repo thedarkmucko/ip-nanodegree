@@ -4,8 +4,6 @@ from itertools import islice
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
 
-
-
 class AttributeFilter:
     def __init__(self, op, value):
         self.op = op
@@ -85,21 +83,8 @@ def create_filters(date=None, start_date=None, end_date=None,
     
     return list_of_filters
 
-
-
-
 def limit(iterator, n):
-    """Produce a limited stream of values from an iterator.
-
-    If `n` is 0 or None, don't limit the iterator at all.
-
-    :param iterator: An iterator of values.
-    :param n: The maximum number of values to produce.
-    :yield: The first (at most) `n` values from the iterator.
-    """
-    # TODO: Produce at most `n` values from the given iterator.
-    
-    if n == 0 or n is None:
+    if n == 0 or n == None:
         n = None
         
     return islice(iterator, n)
