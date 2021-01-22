@@ -54,4 +54,6 @@ class NEODatabase:
     def query(self, filters=()):
     #filter neodb object and return a generator based on filters
         for approach in self._approaches:
-            yield approach
+            flag = False in map(lambda x: x(approach), filters)
+            if not flag:
+                yield approach
