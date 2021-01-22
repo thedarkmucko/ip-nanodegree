@@ -82,7 +82,7 @@ class NearEarthObject:
             return f"{self.designation} - {self.name}"
         else:
             return f"{self.designation}"
-    # return the string representation of the NEO
+    # return the string representation of the NEO 
     def __str__(self):
         hazard = ''
         if self.hazardous:

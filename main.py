@@ -59,14 +59,6 @@ _START = time.time()
 
 
 def date_fromisoformat(date_string):
-    """Return a `datetime.date` corresponding to a string in YYYY-MM-DD format.
-
-    In Python 3.7+, there is `datetime.date.fromisoformat`, but alas - we're
-    supporting Python 3.6+.
-
-    :param date_string: A date in the format YYYY-MM-DD.
-    :return: A `datetime.date` correspondingo the given date string.
-    """
     try:
         return datetime.datetime.strptime(date_string, '%Y-%m-%d').date()
     except ValueError:
@@ -160,22 +152,6 @@ def make_parser():
 
 
 def inspect(database, pdes=None, name=None, verbose=False):
-    """Perform the `inspect` subcommand.
-
-    This function fetches an NEO by designation or by name. If a matching NEO is
-    found, information about the NEO is printed (additionally, information for
-    all of the NEO's known close approaches is printed if `verbose=True`).
-    Otherwise, a message is printed noting that there are no matching NEOs.
-
-    At least one of `pdes` and `name` must be given. If both are given, prefer
-    to look up the NEO by the primary designation.
-
-    :param database: The `NEODatabase` containing data on NEOs and their close approaches.
-    :param pdes: The primary designation of an NEO for which to search.
-    :param name: The name of an NEO for which to search.
-    :param verbose: Whether to additionally print all of a matching NEO's close approaches.
-    :return: The matching `NearEarthObject`, or None if not found.
-    """
     # Fetch the NEO of interest.
     if pdes:
         neo = database.get_neo_by_designation(pdes)
