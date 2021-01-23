@@ -138,7 +138,7 @@ class CloseApproach:
             self.neo = neo
 
     def __str__(self):
-        return f"At {self.time_str}, '{self.designation}' approaches Earth at a distance of {self.distance:.2f} au and a velocity of {self.velocity:.2f} km/s."
+        return f"At {self.time_str}, '{self.designation}' approaches Earth at a distance of {self.distance:.2f} au and a velocity of {self.velocity:.2f} km/s. {self.neo}"
 
     def __repr__(self):
         return (f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
