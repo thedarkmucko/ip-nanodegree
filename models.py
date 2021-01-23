@@ -4,7 +4,7 @@ class NearEarthObject:
     _all_objects = dict()
     _counter = 0
 
-    def __init__(self, designation, name, diameter, hazardous):
+    def __init__(self, designation, name, diameter, hazardous='N'):
         self._designation = designation
         if name:
             self.name = name
@@ -16,13 +16,8 @@ class NearEarthObject:
         else:
             self.diameter = float('nan')
             
-        if hazardous:
-            if hazardous == 'Y':
-                self.hazardous = True
-            elif hazardous == 'N':
-                self.hazardous = False
-            else:
-                self.hazardous = False
+        if hazardous == 'Y':
+            self.hazardous = True
         else:
             self.hazardous = False
 

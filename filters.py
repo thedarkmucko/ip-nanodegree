@@ -31,7 +31,6 @@ class VelocityFilter(AttributeFilter):
     def get(cls, approach):
         return approach.velocity
 
-
 class DateFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
@@ -80,11 +79,14 @@ def create_filters(date=None, start_date=None, end_date=None,
         list_of_filters.append(DiameterFilter(operator.le, diameter_max))
     if (not hazardous):
         list_of_filters.append(HazardousFilter(operator.eq, hazardous))
-    
+    print(list_of_filters)
     return list_of_filters
 
-def limit(iterator, n):
-    if n == 0 or n == None:
+def limit(iterator, n=None):
+    if n == 0:
         n = None
-        
+    """
+    In [3]: list(islice([1,2,3,4,5,6],2))
+    Out[3]: [1, 2]
+    """
     return islice(iterator, n)

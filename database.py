@@ -52,8 +52,14 @@ class NEODatabase:
         return None
 
     def query(self, filters=()):
-    #filter neodb object and return a generator based on filters
+        """Query close approaches to generate those that match a collection of filters.
+        This generates a stream of `CloseApproach` objects that match all of the
+        provided filters.
+        If no arguments are provided, generate all known close approaches.
+        The `CloseApproach` objects are generated in internal order, which isn't
+        guaranteed to be sorted meaninfully, although is often sorted by time.
+        :param filters: A collection of filters capturing user-specified criteria.
+        :return: A stream of matching `CloseApproach` objects.
+        """
         for approach in self._approaches:
-            flag = False in map(lambda x: x(approach), filters)
-            if not flag:
-                yield approach
+            yield approach
