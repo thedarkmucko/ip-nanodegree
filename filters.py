@@ -5,6 +5,9 @@ class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
 
 class AttributeFilter:
+    """
+    A Templace class for all other Filters
+    """
     def __init__(self, op, value):
         self.op = op
         self.value = value
@@ -24,7 +27,6 @@ class DistanceFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
         return approach.distance
-
 
 class VelocityFilter(AttributeFilter):
     @classmethod
@@ -77,7 +79,7 @@ def create_filters(date=None, start_date=None, end_date=None,
         list_of_filters.append(DiameterFilter(operator.le, diameter_max))
     if (hazardous != None):
         list_of_filters.append(HazardousFilter(operator.eq, hazardous))
-    print(list_of_filters)
+
     return list_of_filters
 
 def limit(iterator, n=None):

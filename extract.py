@@ -7,7 +7,7 @@ from models import NearEarthObject, CloseApproach
 def load_neos(neo_csv_path):
     infile = pathlib.Path(neo_csv_path)
     out_neos = list()
-
+    # process the file and create the NEO 
     with open(infile, 'r') as input:
         data = csv.DictReader(input)
         for row in data:
@@ -16,7 +16,6 @@ def load_neos(neo_csv_path):
     return out_neos
 
 def load_approaches(cad_json_path):
-    
     # get the data from the json file
     infile = pathlib.Path(cad_json_path)
     with open(infile, 'r') as input:
@@ -28,9 +27,11 @@ def load_approaches(cad_json_path):
     raw_approaches = list()
     # do the processing of data 
     for item in raw_data:
+        # find the dict with fields and values
         if item == 'fields':
             for item in raw_data[item]:
                 fields.append(item)
+        # find the dict with data and add them to approaches list
         if item == 'data':
             for list_item in raw_data[item]:
                 raw_approaches.append(list_item)
@@ -41,7 +42,7 @@ def load_approaches(cad_json_path):
     approaches = build_list_of_approaches(raw_approaches, fields_dict)
     
     list_of_ca_objects = list()
-    # finally we can create a list of CAs based on keywords on a 
+    # finally we can create a list of CAs based on keywords 
     for approach in approaches:
         list_of_ca_objects.append(CloseApproach(designation=approach['des'], time=approach['cd'], distance=approach['dist'], velocity=approach['v_rel']))
         
