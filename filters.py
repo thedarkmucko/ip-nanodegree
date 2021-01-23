@@ -79,6 +79,7 @@ def create_filters(date=None, start_date=None, end_date=None,
         list_of_filters.append(DiameterFilter(operator.le, diameter_max))
     if (not hazardous):
         list_of_filters.append(HazardousFilter(operator.eq, hazardous))
+        
     print(list_of_filters)
     return list_of_filters
 
