@@ -67,8 +67,6 @@ def create_filters(date=None, start_date=None, end_date=None,
         list_of_filters.append(DistanceFilter(operator.ge, distance_min))
     if (distance_max):
         list_of_filters.append(DistanceFilter(operator.le, distance_max))
-    if (distance_max):
-        list_of_filters.append(DistanceFilter(operator.le, distance_max))
     if (velocity_min):
         list_of_filters.append(VelocityFilter(operator.ge, velocity_min))
     if (velocity_max):
@@ -77,7 +75,7 @@ def create_filters(date=None, start_date=None, end_date=None,
         list_of_filters.append(DiameterFilter(operator.ge, diameter_min))
     if (diameter_max):
         list_of_filters.append(DiameterFilter(operator.le, diameter_max))
-    if (not hazardous):
+    if (hazardous != None):
         list_of_filters.append(HazardousFilter(operator.eq, hazardous))
         
     print(list_of_filters)

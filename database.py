@@ -62,4 +62,6 @@ class NEODatabase:
         :return: A stream of matching `CloseApproach` objects.
         """
         for approach in self._approaches:
-            yield approach
+            f = map(lambda x: x(approach), filters)
+            if True in f:
+                yield approach
