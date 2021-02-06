@@ -30,7 +30,10 @@ class NearEarthObject:
         NearEarthObject._counter += 1
         # create a class list for all instances of NEO
         NearEarthObject._all_objects[self._object_id] = self
-                
+    
+    def serialize(self):
+        return {'designation': self.designation, 'name': self.name, 'diameter_km' : self.diameter, 'potentially_hazarous': self.hazardous}
+    
     # let's make it an iterable class 
     def __getitem__(self, index):
         return self[index]  
@@ -121,7 +124,9 @@ class CloseApproach:
         else:
             self.neo = None
 
-
+    def serialize(self):
+        return {'datetime_utc': datetime_to_str(self.time), 'distance_au': self.distance, 'velocity_km_s' : self.velocity}
+    
     def __getitem__(self, index):
         return self[index]
     
