@@ -29,7 +29,8 @@ neo.show_approaches(limit=3)
 
 import filters, operator
 approach = neodb._approaches[1]
+
+print(f'>>> {approach}')
+
 f = filters.DateFilter(operator.eq, '1920-10-22')
 print(f(approach), f, approach)
-
-

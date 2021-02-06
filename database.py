@@ -56,7 +56,7 @@ class NEODatabase:
         for approach in self._approaches:
             # mapped returns something like [True, False, True] for filters
             mapped = map(lambda x: x(approach), filters)
-            # if all flags are True [True, True, True]
+            # if all flags are True like [True, True, True]
             if all(flag == True for flag in mapped):
                 # we can yield that approach, because it matches all filter criteriums
                 yield approach
