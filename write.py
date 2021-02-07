@@ -43,4 +43,4 @@ def write_to_json(results, filename):
         s.append(dict_obj)
     
     with open(filename, 'w') as fd:
-        fd.write(json.dumps(json.JSONEncoder().encode(s), indent=2))
+        fd.write(json.dumps(s, indent=2))
