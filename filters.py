@@ -1,8 +1,10 @@
 import operator
 from itertools import islice
 
+
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
+
 
 class AttributeFilter:
     """
@@ -20,7 +22,8 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
+        return (f"{self.__class__.__name__}(op=operator.{self.op.__name__},"
+                f"value={self.value})")
 
 
 class DistanceFilter(AttributeFilter):
@@ -28,10 +31,12 @@ class DistanceFilter(AttributeFilter):
     def get(cls, approach):
         return approach.distance
 
+
 class VelocityFilter(AttributeFilter):
     @classmethod
     def get(cls, approach):
         return approach.velocity
+
 
 class DateFilter(AttributeFilter):
     @classmethod
@@ -56,7 +61,7 @@ def create_filters(date=None, start_date=None, end_date=None,
                    velocity_min=None, velocity_max=None,
                    diameter_min=None, diameter_max=None,
                    hazardous=None):
-    
+
     list_of_filters = list()
 
     if (date):
@@ -77,10 +82,11 @@ def create_filters(date=None, start_date=None, end_date=None,
         list_of_filters.append(DiameterFilter(operator.ge, diameter_min))
     if (diameter_max):
         list_of_filters.append(DiameterFilter(operator.le, diameter_max))
-    if (hazardous != None):
+    if (hazardous is not None):
         list_of_filters.append(HazardousFilter(operator.eq, hazardous))
 
     return list_of_filters
+
 
 def limit(iterator, n=None):
     if n == 0:
