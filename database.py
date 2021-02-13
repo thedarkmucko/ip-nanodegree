@@ -13,7 +13,7 @@ class NEODatabase:
 
         for neo in neos:
             if not neo.designation in designation_dict:
-                # create a list for the neo designation
+                # attach a neo to key: designation
                 designation_dict[neo.designation] = neo
         
         self._designations = designation_dict
