@@ -6,8 +6,8 @@ An Object that holds all neos and approaches sorted by designation to create the
 class NEODatabase:
     def __init__(self, neos, approaches):
     # init method to initialize the NEODatabase
-        neos.sort(key=lambda x: x.designation)
-        approaches.sort(key=lambda x: x.designation)
+        neos = sorted(neos, key=lambda x: x.designation)
+        approaches = sorted(approaches, key=lambda x: x.designation)
         self._neos = neos
         self._approaches = approaches
 
