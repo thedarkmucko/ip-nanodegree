@@ -15,8 +15,6 @@ class NEODatabase:
             if not neo.designation in designation_dict:
                 # create a list for the neo designation
                 designation_dict[neo.designation] = neo
-            if neo.designation in designation_dict:
-                designation_dict[neo.designation] = neo
         
         self._designations = designation_dict
         self._neos = neos
