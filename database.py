@@ -2,55 +2,53 @@
 NEODatabase 
 An Object that holds all neos and approaches sorted by designation to create the object fast
 """
-
+    
 class NEODatabase:
     def __init__(self, neos, approaches):
-    # init method to initialize the NEODatabase
-        neos = sorted(neos, key=lambda x: x.designation)
-        approaches = sorted(approaches, key=lambda x: x.designation)
+        # there is a 1 neo with multiple approaches
+        # let's loop through them to have a dict of them to search the 
+        # neos fast
+        
+        designation_dict = dict()
+
+        for neo in neos:
+            if not neo.designation in designation_dict:
+                # create a list for the neo designation
+                designation_dict[neo.designation] = neo
+            if neo.designation in designation_dict:
+                designation_dict[neo.designation] = neo
+        
+        self._designations = designation_dict
         self._neos = neos
         self._approaches = approaches
-
-        i = 0
-        j = 0
         
-        while i < len(neos) and j < len(approaches):
-            neo = neos[i] 
-            approach = approaches[j]   
-            if neo.designation == approach.designation:     
-                neo.append(approach)
-                approach.attach(neo)
-                j += 1
-            else:
-                i += 1
+        for approach in approaches:
+            # all approaches lookup the designation_dict for a neo
+            # if there is a designation like that we modify that neo and 
+            # approach
+            if approach.designation in designation_dict:
+                # append to a neo object this approach 
+                designation_dict[approach.designation].append(approach)
+                # attach the neo object to this approach
+                approach.attach(designation_dict[approach.designation])
+            
+        
 
-       
-    def neoAt(self, index):
-    # helper method to locate a neo at index
-        return self._neos[index]
-    
-    def approachAt(self, index):
-    # helper method to locate an approach by index
-        return self._approaches[index]
-
-    def __getitem__(self, index):
-    # to make it an iterable, returns a neo (which has all informations)
-        return self._neos[index]
-    
     def get_neo_by_designation(self, designation):
-    # return a neo by designation or None
-        for neo in self._neos:
-            if neo.designation == designation:
-                return neo
-        return None
+        if designation in self._designations:
+            # this will return a neo by designation
+            return self._designations[designation]
+        else:
+            return None
+
 
     def get_neo_by_name(self, name):
-    # return a neo by name or None
+        # return a neo by name or None
         for neo in self._neos:
             if neo.neo_name == name:
                 return neo
         return None
-
+    
     def query(self, filters=()):
     # for each approach we have to check the filters
         for approach in self._approaches:
